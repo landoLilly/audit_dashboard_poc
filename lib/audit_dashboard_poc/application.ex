@@ -15,6 +15,7 @@ defmodule AuditDashboardPoc.Application do
       # Start a worker by calling: AuditDashboardPoc.Worker.start_link(arg)
       # {AuditDashboardPoc.Worker, arg},
       # Start to serve requests, typically the last entry
+      AuditDashboardPoc.AuditEventsListener,
       AuditDashboardPocWeb.Endpoint,
     ]
 
