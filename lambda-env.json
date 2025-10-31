@@ -1,0 +1,5 @@
+{
+  "WEBHOOK_URL": "http://host.docker.internal:4000/api/webhook/dynamodb-stream",
+  "WEBHOOK_TIMEOUT": "10000",
+  "TABLE_NAME": "AuditEvents"
+}

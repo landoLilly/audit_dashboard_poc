@@ -9,7 +9,7 @@ const http = require('http');
  */
 
 // Configuration - these can be set as environment variables
-const WEBHOOK_URL = process.env.WEBHOOK_URL || 'http://localhost:4000/api/webhook/dynamodb-stream';
+const WEBHOOK_URL = process.env.WEBHOOK_URL || 'http://host.docker.internal:4000/api/webhook/dynamodb-stream';
 const WEBHOOK_TIMEOUT = parseInt(process.env.WEBHOOK_TIMEOUT) || 10000; // 10 seconds
 const TABLE_NAME = process.env.TABLE_NAME || 'AuditEvents';
 

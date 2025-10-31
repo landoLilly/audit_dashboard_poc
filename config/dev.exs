@@ -92,7 +92,7 @@ config :swoosh, :api_client, false
 
 # Parse endpoint URL if provided via environment variable
 {scheme, host, port} = case System.get_env("AWS_ENDPOINT_URL") do
-  nil -> {"http://", "localhost", 8000}  # Default to DynamoDB Local
+  nil -> {"http://", "localhost", 4566}  # Default to LocalStack endpoint
   url when is_binary(url) ->
     %{scheme: scheme, host: host, port: port} = URI.parse(url)
     {scheme, host, port}
