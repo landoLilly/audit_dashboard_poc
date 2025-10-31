@@ -1,0 +1,1 @@
+{"statusCode":500,"body":"{\"error\":\"Processing failed\",\"message\":\"connect ECONNREFUSED 127.0.0.1:4000\",\"timestamp\":\"2025-10-30T21:06:25.530Z\"}"}

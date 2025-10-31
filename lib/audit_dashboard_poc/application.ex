@@ -7,17 +7,18 @@ defmodule AuditDashboardPoc.Application do
 
   @impl true
   def start(_type, _args) do
-    children = [
+    base_children = [
       AuditDashboardPocWeb.Telemetry,
-      AuditDashboardPoc.Repo,
+      # AuditDashboardPoc.Repo,
       {DNSCluster, query: Application.get_env(:audit_dashboard_poc, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: AuditDashboardPoc.PubSub},
+      AuditDashboardPoc.DynamoDBStreamsListener
       # Start a worker by calling: AuditDashboardPoc.Worker.start_link(arg)
       # {AuditDashboardPoc.Worker, arg},
       # Start to serve requests, typically the last entry
-      AuditDashboardPoc.AuditEventsListener,
-      AuditDashboardPocWeb.Endpoint,
     ]
+
+    children = base_children ++ [AuditDashboardPocWeb.Endpoint]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options

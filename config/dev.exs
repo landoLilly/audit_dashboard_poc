@@ -86,3 +86,25 @@ config :phoenix_live_view,
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
+
+# DynamoDB Localconfiguration for development
+# Set AWS_ENDPOINT_URL environment variable to override default
+
+# Parse endpoint URL if provided via environment variable
+{scheme, host, port} = case System.get_env("AWS_ENDPOINT_URL") do
+  nil -> {"http://", "localhost", 8000}  # Default to DynamoDB Local
+  url when is_binary(url) ->
+    %{scheme: scheme, host: host, port: port} = URI.parse(url)
+    {scheme, host, port}
+end
+
+config :ex_aws,
+  access_key_id: System.get_env("AWS_ACCESS_KEY_ID") || "fakeMyKeyId",
+  secret_access_key: System.get_env("AWS_SECRET_ACCESS_KEY") || "fakeSecretAccessKey",
+  region: System.get_env("AWS_DEFAULT_REGION") || "us-east-1"
+
+config :ex_aws, :dynamodb,
+  scheme: scheme,
+  host: host,
+  port: port,
+  region: System.get_env("AWS_DEFAULT_REGION") || "us-east-1"

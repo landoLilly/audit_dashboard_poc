@@ -2,6 +2,8 @@ defmodule AuditDashboardPoc.AuditEvent do
   use Ecto.Schema
   import Ecto.Changeset
 
+  # This schema matches the audit_events table in the PostgreSQL database.
+  # Note: The DynamoDB audit_events table has a different schema structure.
   schema "audit_events" do
     field :event_type, :string
     field :user_id, :string

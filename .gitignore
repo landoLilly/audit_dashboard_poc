@@ -35,3 +35,7 @@ audit_dashboard_poc-*.tar
 npm-debug.log
 /assets/node_modules/
 
+node_modules/
+
+.aws-sam/
+

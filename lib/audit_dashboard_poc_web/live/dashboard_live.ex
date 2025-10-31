@@ -1,15 +1,14 @@
 defmodule AuditDashboardPocWeb.DashboardLive do
   use AuditDashboardPocWeb, :live_view
-  alias AuditDashboardPoc.Repo
   alias AuditDashboardPoc.AuditEvent
-  import Ecto.Query
+  alias AuditDashboardPoc.AuditEventsDynamo
   require Logger
 
   @impl true
   def render(assigns) do
     ~H"""
       <Layouts.app flash={@flash}>
-        <h1 class="text-3xl font-bold mb-6 text-center">Audit Dashboard</h1>
+        <h1 class="text-3xl font-bold mb-6">Audit Dashboard</h1>
         <%= if @audit_events_count == 0 do %>
           <div class="text-center py-8">
             <p class="text-gray-500 text-lg">No audit events found.</p>
@@ -50,16 +49,24 @@ defmodule AuditDashboardPocWeb.DashboardLive do
       Phoenix.PubSub.subscribe(AuditDashboardPoc.PubSub, "audit_events")
     end
 
-    audit_events =
-      from(ae in AuditEvent, order_by: [desc: ae.event_timestamp], limit: 100)
-      |> Repo.all()
+    case AuditEventsDynamo.list_audit_events(limit: 100) do
+      {:ok, audit_events} ->
+        socket =
+          socket
+          |> assign(:audit_events_count, length(audit_events))
+          |> stream(:audit_events, audit_events)
 
-    socket =
-      socket
-      |> assign(:audit_events_count, length(audit_events))
-      |> stream(:audit_events, audit_events)
+        {:ok, socket}
 
-    {:ok, socket}
+      {:error, _reason} ->
+        socket =
+          socket
+          |> assign(:audit_events_count, 0)
+          |> stream(:audit_events, [])
+          |> put_flash(:error, "Failed to load audit events from DynamoDB")
+
+        {:ok, socket}
+    end
   end
 
   @impl true
@@ -71,14 +78,17 @@ defmodule AuditDashboardPocWeb.DashboardLive do
         # Convert the record data to an AuditEvent struct with proper timestamp parsing
         record_data = data["record"]
 
-        # Parse the timestamp properly - PostgreSQL returns it without timezone
-        {:ok, timestamp, _} = DateTime.from_iso8601(record_data["event_timestamp"] <> "Z")
+        # Parse the timestamp properly - DynamoDB returns ISO8601 format
+        event_timestamp = case DateTime.from_iso8601(record_data["event_timestamp"]) do
+          {:ok, timestamp, _} -> timestamp
+          _ -> DateTime.utc_now()
+        end
 
         new_event = %AuditEvent{
           id: record_data["id"],
           event_type: record_data["event_type"],
           user_id: record_data["user_id"],
-          event_timestamp: timestamp,
+          event_timestamp: event_timestamp,
           ip_address: record_data["ip_address"],
           action: record_data["action"],
           success: record_data["success"]
@@ -94,13 +104,16 @@ defmodule AuditDashboardPocWeb.DashboardLive do
       "UPDATE" ->
         # Parse the timestamp properly
         record_data = data["record"]
-        {:ok, timestamp, _} = DateTime.from_iso8601(record_data["event_timestamp"] <> "Z")
+        event_timestamp = case DateTime.from_iso8601(record_data["event_timestamp"]) do
+          {:ok, timestamp, _} -> timestamp
+          _ -> DateTime.utc_now()
+        end
 
         updated_event = %AuditEvent{
           id: record_data["id"],
           event_type: record_data["event_type"],
           user_id: record_data["user_id"],
-          event_timestamp: timestamp,
+          event_timestamp: event_timestamp,
           ip_address: record_data["ip_address"],
           action: record_data["action"],
           success: record_data["success"]

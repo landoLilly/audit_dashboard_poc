@@ -21,10 +21,13 @@ defmodule AuditDashboardPocWeb.Router do
     live "/dashboard", DashboardLive
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", AuditDashboardPocWeb do
-  #   pipe_through :api
-  # end
+  # API routes for webhooks and external integrations
+  scope "/api", AuditDashboardPocWeb do
+    pipe_through :api
+
+    # DynamoDB streams webhook endpoint
+    post "/webhook/dynamodb-stream", WebhookController, :dynamodb_stream
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:audit_dashboard_poc, :dev_routes) do

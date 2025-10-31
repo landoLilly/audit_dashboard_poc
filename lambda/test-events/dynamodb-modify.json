@@ -1,0 +1,74 @@
+{
+  "Records": [
+    {
+      "eventID": "2",
+      "eventVersion": "1.0",
+      "dynamodb": {
+        "Keys": {
+          "AuditId": {
+            "S": "audit-456-test"
+          }
+        },
+        "NewImage": {
+          "AuditId": {
+            "S": "audit-456-test"
+          },
+          "EventTimestamp": {
+            "S": "2025-10-31T10:31:00Z"
+          },
+          "UserId": {
+            "S": "user-789"
+          },
+          "EventType": {
+            "S": "LOGOUT"
+          },
+          "Source": {
+            "S": "mobile-app"
+          },
+          "Status": {
+            "S": "SUCCESS"
+          },
+          "SessionId": {
+            "S": "session-xyz"
+          },
+          "PartitionKey": {
+            "S": "2025-10-31"
+          },
+          "Details": {
+            "S": "{\"reason\":\"user_initiated\"}"
+          }
+        },
+        "OldImage": {
+          "AuditId": {
+            "S": "audit-456-test"
+          },
+          "EventTimestamp": {
+            "S": "2025-10-31T10:30:00Z"
+          },
+          "UserId": {
+            "S": "user-789"
+          },
+          "EventType": {
+            "S": "LOGIN"
+          },
+          "Source": {
+            "S": "mobile-app"
+          },
+          "Status": {
+            "S": "SUCCESS"
+          },
+          "SessionId": {
+            "S": "session-xyz"
+          }
+        },
+        "StreamViewType": "NEW_AND_OLD_IMAGES",
+        "SequenceNumber": "222",
+        "SizeBytes": 26
+      },
+      "awsRegion": "us-east-1",
+      "eventName": "MODIFY",
+      "eventSourceARN": "arn:aws:dynamodb:us-east-1:123456789012:table/AuditEvents/stream/2025-10-31T00:00:00.000",
+      "eventSource": "aws:dynamodb"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "dynamodb-stream-webhook-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function to process DynamoDB streams and call webhook when records are inserted in AuditEvents table",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "zip -r function.zip index.js package.json node_modules/",
+    "deploy": "aws lambda update-function-code --function-name dynamodb-stream-webhook --zip-file fileb://function.zip"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1691.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.143"
+  },
+  "keywords": [
+    "aws",
+    "lambda",
+    "dynamodb",
+    "streams",
+    "webhook"
+  ],
+  "author": "Audit Dashboard Team",
+  "license": "MIT"
+}

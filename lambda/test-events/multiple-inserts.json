@@ -1,0 +1,101 @@
+{
+  "Records": [
+    {
+      "eventID": "1",
+      "eventVersion": "1.0",
+      "dynamodb": {
+        "Keys": {
+          "AuditId": {
+            "S": "audit-123-test"
+          }
+        },
+        "NewImage": {
+          "AuditId": {
+            "S": "audit-123-test"
+          },
+          "EventTimestamp": {
+            "S": "2025-10-31T10:30:00Z"
+          },
+          "UserId": {
+            "S": "user-456"
+          },
+          "EventType": {
+            "S": "LOGIN"
+          },
+          "Source": {
+            "S": "web-app"
+          },
+          "Status": {
+            "S": "SUCCESS"
+          },
+          "SessionId": {
+            "S": "session-789"
+          },
+          "PartitionKey": {
+            "S": "2025-10-31"
+          },
+          "Details": {
+            "S": "{\"ip\":\"192.168.1.1\",\"userAgent\":\"Mozilla/5.0\"}"
+          },
+          "ResourceId": {
+            "S": "resource-abc"
+          }
+        },
+        "StreamViewType": "NEW_IMAGE",
+        "SequenceNumber": "111",
+        "SizeBytes": 26
+      },
+      "awsRegion": "us-east-1",
+      "eventName": "INSERT",
+      "eventSourceARN": "arn:aws:dynamodb:us-east-1:123456789012:table/AuditEvents/stream/2025-10-31T00:00:00.000",
+      "eventSource": "aws:dynamodb"
+    },
+    {
+      "eventID": "2",
+      "eventVersion": "1.0",
+      "dynamodb": {
+        "Keys": {
+          "AuditId": {
+            "S": "audit-456-test"
+          }
+        },
+        "NewImage": {
+          "AuditId": {
+            "S": "audit-456-test"
+          },
+          "EventTimestamp": {
+            "S": "2025-10-31T10:31:00Z"
+          },
+          "UserId": {
+            "S": "user-789"
+          },
+          "EventType": {
+            "S": "DATA_ACCESS"
+          },
+          "Source": {
+            "S": "api"
+          },
+          "Status": {
+            "S": "SUCCESS"
+          },
+          "SessionId": {
+            "S": "session-abc"
+          },
+          "PartitionKey": {
+            "S": "2025-10-31"
+          },
+          "Details": {
+            "S": "{\"endpoint\":\"/api/users/123\",\"method\":\"GET\"}"
+          }
+        },
+        "StreamViewType": "NEW_IMAGE",
+        "SequenceNumber": "222",
+        "SizeBytes": 28
+      },
+      "awsRegion": "us-east-1",
+      "eventName": "INSERT",
+      "eventSourceARN": "arn:aws:dynamodb:us-east-1:123456789012:table/AuditEvents/stream/2025-10-31T00:00:00.000",
+      "eventSource": "aws:dynamodb"
+    }
+  ]
+}
